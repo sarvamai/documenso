@@ -1,6 +1,6 @@
 steps:
   # Build the container image and push it with Kaniko
-  - name: "gcr.io/kaniko-project/executor:latest"
+  - name: "gcr.io/kaniko-project/executor:debug"
     script: |
       #!/busybox/sh
       cat <<EOF > /kaniko/.docker/config.json
