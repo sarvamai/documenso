@@ -260,12 +260,14 @@ export class LocalJobProvider extends BaseJobProvider {
       runTask: async <T extends void | Json>(cacheKey: string, callback: () => Promise<T>) => {
         const hashedKey = Buffer.from(sha256(cacheKey)).toString('hex');
 
+        console.log(`[JOBS]: Running task ${jobId} with cache key ${cacheKey}`);
         let task = await prisma.backgroundJobTask.findFirst({
           where: {
             id: `task-${hashedKey}--${jobId}`,
             jobId,
           },
         });
+        console.log(`Task: `, task);
 
         if (!task) {
           task = await prisma.backgroundJobTask.create({
@@ -303,7 +305,8 @@ export class LocalJobProvider extends BaseJobProvider {
           });
 
           return result;
-        } catch {
+        } catch (error) {
+          console.error(`[JOBS]: Task ${jobId} failed`, error);
           task = await prisma.backgroundJobTask.update({
             where: {
               id: task.id,
