@@ -23,13 +23,14 @@ steps:
       --dockerfile=docker/Dockerfile \
       --destination=${_IMAGE_PATH}:${_VERSION} \
       --destination=${_IMAGE_PATH}:${SHORT_SHA} \
-      --destination=${_IMAGE_PATH}:latest \
+      --destination=${_IMAGE_PATH}:latest-${_ENV} \
       --destination ${_AZURE_IMAGE_PATH}:${_VERSION} \
       --destination ${_AZURE_IMAGE_PATH}:${SHORT_SHA} \
-      --destination ${_AZURE_IMAGE_PATH}:latest \
+      --destination ${_AZURE_IMAGE_PATH}:latest-${_ENV} \
       --build-arg=NEXT_PUBLIC_WEBAPP_URL=${_DOCUMENSO_WEBAPP_URL} \
       --build-arg=NEXT_PUBLIC_MARKETING_URL=${_DOCUMENSO_WEBAPP_URL} \
       --build-arg=NEXT_PUBLIC_UPLOAD_TRANSPORT=${_DOCUMENSO_UPLOAD_TRANSPORT} \
+      --build-arg=NEXT_PUBLIC_DISABLE_SIGNUP=${_DISABLE_SIGNUP}
     automapSubstitutions: true
     secretEnv:
       - "AZURE_GITOPSDOCKER_PASSWORD"
@@ -48,9 +49,11 @@ substitutions:
   _VERSION: $TAG_NAME
   _AZURE_USERNAME: "gitopsdocker"
   _AZURE_REGISTRY: "gitopsdocker.azurecr.io"
+  _ENV: "dev"
   _AZURE_IMAGE_PATH: "${_AZURE_REGISTRY}/${_IMAGE_NAME}"
-  _DOCUMENSO_WEBAPP_URL: "https://law-dev.sarvam.ai/internal/documenso"
+  _DOCUMENSO_WEBAPP_URL: "https://documenso.law-dev.sarvam.ai"
   _DOCUMENSO_UPLOAD_TRANSPORT: "s3"
+  _DISABLE_SIGNUP: "true"
   # default substitutions
 
 options:
